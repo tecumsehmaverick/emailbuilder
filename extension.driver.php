@@ -8,15 +8,11 @@
 	require_once(dirname(__FILE__) . '/libs/class.override.php');
 	
 	class Extension_EmailBuilder extends Extension {
-	/*-------------------------------------------------------------------------
-		Definition:
-	-------------------------------------------------------------------------*/
-		
 		public function about() {
 			return array(
 				'name'			=> 'Email Builder',
-				'version'		=> '1.0',
-				'release-date'	=> '2011-03-03',
+				'version'		=> '0.1',
+				'release-date'	=> '2011-05-03',
 				'author'		=> array(
 					'name'			=> 'Rowan Lewis',
 					'website'		=> 'http://rowanlewis.com/',
@@ -171,7 +167,7 @@
 		
 		public function appendAttachmentHandler($context) {
 			$context['options'][] = array(
-				'follow_links', $context['type'] == 'follow_links', __('Follow links in HTML')
+				'follow_attachment_links', $context['type'] == 'follow_links', __('Follow attachment links: &lt;link rel="attachment" /&gt;')
 			);
 		}
 		

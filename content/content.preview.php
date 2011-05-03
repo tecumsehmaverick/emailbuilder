@@ -1,6 +1,6 @@
 <?php
 	
-	require_once(EXTENSIONS . '/emailbuilder/libs/class.page.php');
+	require_once EXTENSIONS . '/emailbuilder/libs/class.page.php';
 	
 	class ContentExtensionEmailBuilderPreview extends EmailBuilderPage {
 		protected $email;

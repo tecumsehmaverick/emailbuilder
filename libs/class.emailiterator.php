@@ -1,5 +1,12 @@
 <?php
 	
+	/**
+	 * @package libs
+	 */
+	
+	/**
+	 * Iterate over available templates.
+	 */
 	class EmailBuilderEmailIterator extends ArrayIterator {
 		public function __construct() {
 			parent::__construct(
@@ -14,6 +21,9 @@
 			);
 		}
 		
+		/**
+		 * Return an email template object.
+		 */
 		public function current() {
 			return EmailBuilderEmail::load(parent::current());
 		}

@@ -1,5 +1,9 @@
 <?php
 	
+	/**
+	 * @package emailbuilder
+	 */
+	
 	require_once(TOOLKIT . '/class.sectionmanager.php');
 	require_once(TOOLKIT . '/class.entrymanager.php');
 	require_once(dirname(__FILE__) . '/libs/class.email.php');
@@ -7,7 +11,13 @@
 	require_once(dirname(__FILE__) . '/libs/class.emailresult.php');
 	require_once(dirname(__FILE__) . '/libs/class.override.php');
 	
+	/**
+	 * Email creation and sending API.
+	 */
 	class Extension_EmailBuilder extends Extension {
+		/**
+		 * Extension information.
+		 */
 		public function about() {
 			return array(
 				'name'			=> 'Email Builder',
@@ -21,6 +31,9 @@
 			);
 		}
 		
+		/**
+		 * Cleanup installation.
+		 */
 		public function uninstall() {
 			Symphony::Configuration()->remove('emailbuilder');
 			Symphony::Database()->query("DROP TABLE `tbl_etf_emails`");
@@ -28,6 +41,9 @@
 			Symphony::Database()->query("DROP TABLE `tbl_etf_logs`");
 		}
 		
+		/**
+		 * Create tables and configuration.
+		 */
 		public function install() {
 			$drop = array();
 			
@@ -101,6 +117,9 @@
 			}
 		}
 		
+		/**
+		 * Listen for these delegates.
+		 */
 		public function getSubscribedDelegates() {
 			return array(
 				array(
@@ -131,6 +150,9 @@
 			);
 		}
 		
+		/**
+		 * Add navigation items.
+		 */
 		public function fetchNavigation() {
 			$group = $this->getNavigationGroup();
 			
@@ -161,22 +183,35 @@
 			);
 		}
 		
-	/*-------------------------------------------------------------------------
-		Handlers:
-	-------------------------------------------------------------------------*/
-		
+		/**
+		 * Append the 'Follow attachment links' option.
+		 * Parses HTML link elements and treats the href as an attachment:
+		 * <link rel="attachment" href="workspace/uploads/document.pdf" />
+		 * @todo Move this to a separate extension.
+		 * @param array $context
+		 */
 		public function appendAttachmentHandler($context) {
 			$context['options'][] = array(
 				'follow_attachment_links', $context['type'] == 'follow_links', __('Follow attachment links: &lt;link rel="attachment" /&gt;')
 			);
 		}
 		
+		/**
+		 * Append the 'Intelligently remove HTML' option.
+		 * @todo Move this to a separate extension.
+		 * @param array $context
+		 */
 		public function appendPlainTextHandler($context) {
 			$context['options'][] = array(
 				'strip_html', $context['type'] == 'strip_html', __('Intelligently remove HTML')
 			);
 		}
 		
+		/**
+		 * Search for attachments and/or strip HTML from message.
+		 * @todo Move this to a separate extension.
+		 * @param array $context
+		 */
 		public function beforeSendEmail($context) {
 			$email = $context['email'];
 			$result = $context['result'];
@@ -190,14 +225,24 @@
 		Preferences:
 	-------------------------------------------------------------------------*/
 		
+		
+		/**
+		 * True when no navigation group has been specified.
+		 */
 		protected $missing_navigation_group;
 		
+		/**
+		 * Get the name of the desired navigation group.
+		 */
 		public function getNavigationGroup() {
 			if ($this->missing_navigation_group === true) return null;
 			
 			return Symphony::Configuration()->get('navigation_group', 'emailbuilder');
 		}
 		
+		/**
+		 * Get a list of available navigation groups.
+		 */
 		public function getNavigationGroups() {
 			$sectionManager = new SectionManager(Symphony::Engine());
 			$sections = $sectionManager->fetch(null, 'ASC', 'sortorder');
@@ -213,6 +258,10 @@
 			return array_unique($options);
 		}
 		
+		/**
+		 * Validate preferences before saving.
+		 * @param array $context
+		 */
 		public function actionsPreferences($context) {
 			if (
 				!isset($context['settings']['emailbuilder']['navigation_group'])
@@ -223,6 +272,10 @@
 			}
 		}
 		
+		/**
+		 * View preferences.
+		 * @param array $context
+		 */
 		public function viewPreferences($context) {
 			$wrapper = $context['wrapper'];
 			$errors = Symphony::Engine()->Page->_errors;

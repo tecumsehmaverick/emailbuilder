@@ -1,5 +1,12 @@
 <?php
+
+	/**
+	 * @package libs
+	 */
 	
+	/**
+	 * Represents a collection of data that can alter an email template.
+	 */
 	class EmailBuilderOverride {
 		protected $data;
 		protected $errors;

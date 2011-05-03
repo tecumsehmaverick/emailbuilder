@@ -1,7 +1,18 @@
 <?php
 	
+	/**
+	 * @package libs
+	 */
+	
+	/**
+	 * Represents an email template.
+	 */
 	class EmailBuilderEmail {
-		static public function deleteAll($items) {
+		/**
+		 * Accepts an array of template IDs and deletes them all.
+		 * @param array $items
+		 */
+		static public function deleteAll(array $items) {
 			$result = array();
 			
 			foreach ($items as $id) {
@@ -11,6 +22,10 @@
 			return array_sum($result) == count($result);
 		}
 		
+		/**
+		 * Does a particular template exist?
+		 * @param integer $id
+		 */
 		static public function exists($id) {
 			$data = Symphony::Database()->fetch(sprintf("
 				SELECT
@@ -26,6 +41,10 @@
 			return isset($data[0]['id']);
 		}
 		
+		/**
+		 * Load an email object from database.
+		 * @param integer $id
+		 */
 		static public function load($id) {
 			$data = Symphony::Database()->fetch(sprintf("
 				SELECT
@@ -67,14 +86,23 @@
 			$this->overrides = array();
 		}
 		
+		/**
+		 * Access the internal template data.
+		 */
 		public function data() {
 			return $this->data;
 		}
 		
+		/**
+		 * Access the internal validation errors.
+		 */
 		public function errors() {
 			return $this->errors;
 		}
 		
+		/**
+		 * Access the internal override data.
+		 */
 		public function overrides() {
 			return $this->overrides;
 		}
@@ -83,6 +111,9 @@
 			return 0;
 		}
 		
+		/**
+		 * Delete this email template.
+		 */
 		public function delete() {
 			$result = array();
 			
@@ -116,6 +147,10 @@
 			return array_sum($result) == count($result);
 		}
 		
+		/**
+		 * Fetch the email object, ready to be sent.
+		 * @param integer $entry_id Use this entry to build the email.
+		 */
 		public function fetch($entry_id) {
 			$url = sprintf(
 				'%s?eb-entry=%d',
@@ -180,6 +215,9 @@
 			return $email;
 		}
 		
+		/**
+		 * Get the URL of the template page.
+		 */
 		public function getPageURL() {
 			$page = Symphony::Database()->fetchRow(0, sprintf("
 				SELECT
@@ -198,6 +236,10 @@
 			return rtrim(sprintf('%s/%s', URL, $path), '/');
 		}
 		
+		/**
+		 * Set the template data.
+		 * @param array|object $data
+		 */
 		public function setData($data) {
 			$this->data = (object)array();
 			
@@ -206,7 +248,11 @@
 			}
 		}
 		
-		public function setOverrides($overrides) {
+		/**
+		 * Set the template override data.
+		 * @param array $data
+		 */
+		public function setOverrides(array $overrides) {
 			$this->overrides = array();
 			
 			foreach ($overrides as $order => $override) {
@@ -215,6 +261,9 @@
 			}
 		}
 		
+		/**
+		 * Save the template.
+		 */
 		public function save() {
 			$result = array();
 			$fields = array(
@@ -260,6 +309,9 @@
 			return array_sum($result) == count($result);
 		}
 		
+		/**
+		 * Validate the template and populate the error object.
+		 */
 		public function validate() {
 			$this->errors = new StdClass();
 			$valid = true;

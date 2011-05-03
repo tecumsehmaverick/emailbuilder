@@ -1,5 +1,12 @@
 <?php
 	
+	/**
+	 * @package libs
+	 */
+	
+	/**
+	 * Represents a collection of data that can be used as an email.
+	 */
 	class EmailBuilderEmailResult {
 		protected $attachments;
 		protected $body;

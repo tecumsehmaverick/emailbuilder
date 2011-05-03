@@ -37,6 +37,10 @@
 		public function headers() {
 			return $this->headers;
 		}
+		
+		public function addAttachment($file) {
+			$this->attachments[] = $file;
+		}
 	}
 	
 ?>

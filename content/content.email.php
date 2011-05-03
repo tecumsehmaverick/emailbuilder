@@ -426,7 +426,7 @@
 			$help = new XMLElement('p');
 			$help->setAttribute('class', 'help');
 			$help->setAttribute('style', 'clear: both;');
-			$help->setValue(__('The <code>%s</code> parameter can be used by any datasources on your template page.', array('$etf-entry-id')));
+			$help->setValue(__('The <code>%s</code> parameter can be used by any datasources on your template page. You may also specify it on the URL of your template page as <code>%s</code>.', array('$eb-entry', '?eb-entry=your-entry-id')));
 			
 			$fieldset->appendChild($help);
 			$wrapper->appendChild($fieldset);

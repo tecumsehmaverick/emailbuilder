@@ -4,12 +4,12 @@
 	 * @package emailbuilder
 	 */
 	
-	require_once(TOOLKIT . '/class.sectionmanager.php');
-	require_once(TOOLKIT . '/class.entrymanager.php');
-	require_once(dirname(__FILE__) . '/libs/class.email.php');
-	require_once(dirname(__FILE__) . '/libs/class.emailiterator.php');
-	require_once(dirname(__FILE__) . '/libs/class.emailresult.php');
-	require_once(dirname(__FILE__) . '/libs/class.override.php');
+	require_once TOOLKIT . '/class.sectionmanager.php';
+	require_once TOOLKIT . '/class.entrymanager.php';
+	require_once dirname(__FILE__) . '/libs/class.email.php';
+	require_once dirname(__FILE__) . '/libs/class.emailiterator.php';
+	require_once dirname(__FILE__) . '/libs/class.emailresult.php';
+	require_once dirname(__FILE__) . '/libs/class.override.php';
 	
 	/**
 	 * Email creation and sending API.
@@ -215,6 +215,16 @@
 		public function beforeSendEmail($context) {
 			$email = $context['email'];
 			$result = $context['result'];
+			
+			if ($email->data()->send_attachments == 'follow_attachment_links') {
+				$html = new DOMDocument();
+				$html->loadHTML($result->body()->html);
+				$xpath = new DOMXPath($html);
+				
+				foreach ($xpath->query('//link[@rel = "attachment"]') as $node) {
+					$result->addAttachment($node->getAttribute('href'));
+				}
+			}
 			
 			if ($email->data()->send_plain_text == 'strip_html') {
 				$result->body()->text = trim(strip_tags($result->body()->html));

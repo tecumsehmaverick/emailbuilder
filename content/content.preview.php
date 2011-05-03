@@ -117,6 +117,20 @@
 					$fieldset->appendChild($iframe);
 					$this->Form->appendChild($fieldset);
 				}
+				
+				if ($result->attachments()) {
+					$attachments = implode("\n", $result->attachments());
+					
+					$fieldset = new XMLElement('fieldset');
+					$fieldset->appendChild(new XMLElement('legend', __('Attachments')));
+					$iframe = new XMLElement('iframe');
+					$iframe->setAttribute('src', sprintf(
+						'data:text/plain;base64,%s',
+						base64_encode($attachments)
+					));
+					$fieldset->appendChild($iframe);
+					$this->Form->appendChild($fieldset);
+				}
 			}
 			
 			if (isset($url)) {
